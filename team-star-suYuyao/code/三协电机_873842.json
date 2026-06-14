@@ -1,0 +1,18 @@
+{
+  "company_name": "江苏三协电机股份有限公司",
+  "stock_code": "873842",
+  "as_of_date": "2023-12-31",
+  "shareholders": [
+    {"name": "盛某某", "type": "个人", "shares": 1680, "share_ratio": 33.5, "is_vc": false},
+    {"name": "张某某", "type": "个人", "shares": 320, "share_ratio": 6.38, "is_vc": false},
+    {"name": "开源证券投资", "type": "VC", "shares": 600, "share_ratio": 11.97, "is_vc": true},
+    {"name": "江苏高投", "type": "VC", "shares": 600, "share_ratio": 11.97, "is_vc": true},
+    {"name": "中泰创投", "type": "VC", "shares": 400, "share_ratio": 7.98, "is_vc": true},
+    {"name": "南通科创投", "type": "国资", "shares": 400, "share_ratio": 7.98, "is_vc": false},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 600, "share_ratio": 11.97, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 520, "share_ratio": 10.37, "is_vc": false}
+  ],
+  "total_vc_ratio": 31.92,
+  "evidence_text": "截至2023年12月31日，公司VC机构合计持股31.92%，创始人盛某某为第一大股东，持股33.5%",
+  "source_page": 48
+}

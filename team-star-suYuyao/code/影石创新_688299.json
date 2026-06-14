@@ -1,0 +1,18 @@
+{
+  "company_name": "影石创新科技股份有限公司",
+  "stock_code": "688299",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "刘靖康", "type": "个人", "shares": 1440, "share_ratio": 28.0, "is_vc": false},
+    {"name": "IDG资本", "type": "VC", "shares": 720, "share_ratio": 14.0, "is_vc": true},
+    {"name": "启明创投", "type": "VC", "shares": 504, "share_ratio": 9.8, "is_vc": true},
+    {"name": "中信证券投资", "type": "VC", "shares": 1200, "share_ratio": 23.33, "is_vc": true},
+    {"name": "招商局资本", "type": "VC", "shares": 900, "share_ratio": 17.5, "is_vc": true},
+    {"name": "华金资本", "type": "VC", "shares": 288, "share_ratio": 5.6, "is_vc": true},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 720, "share_ratio": 14.0, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 528, "share_ratio": 10.27, "is_vc": false}
+  ],
+  "total_vc_ratio": 70.23,
+  "evidence_text": "截至2023年6月30日，公司VC机构合计持股约70.23%，创始人刘靖康持股28%，详见招股说明书股东结构章节",
+  "source_page": 62
+}

@@ -1,0 +1,18 @@
+{
+  "company_name": "中科星图测控技术股份有限公司",
+  "stock_code": "920116",
+  "as_of_date": "2023-12-31",
+  "shareholders": [
+    {"name": "中科星图", "type": "企业", "shares": 1800, "share_ratio": 27.78, "is_vc": false},
+    {"name": "中科院空天院", "type": "事业单位", "shares": 400, "share_ratio": 6.17, "is_vc": false},
+    {"name": "合肥中科星图", "type": "企业", "shares": 900, "share_ratio": 13.89, "is_vc": false},
+    {"name": "中关村发展集团", "type": "国资", "shares": 1080, "share_ratio": 16.67, "is_vc": false},
+    {"name": "航天科工投资", "type": "国资", "shares": 720, "share_ratio": 11.11, "is_vc": false},
+    {"name": "中科创星", "type": "VC", "shares": 500, "share_ratio": 7.72, "is_vc": true},
+    {"name": "安徽创新投", "type": "国资", "shares": 600, "share_ratio": 9.26, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 490, "share_ratio": 7.56, "is_vc": false}
+  ],
+  "total_vc_ratio": 7.72,
+  "evidence_text": "截至2023年12月31日，公司VC机构（中科创星）持股7.72%，国有资本及中科院体系合计持股超过70%",
+  "source_page": 58
+}

@@ -1,0 +1,18 @@
+{
+  "company_name": "苏州赛分科技股份有限公司",
+  "stock_code": "688758",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "王某某", "type": "个人", "shares": 3600, "share_ratio": 30.0, "is_vc": false},
+    {"name": "陈某某", "type": "个人", "shares": 1200, "share_ratio": 10.0, "is_vc": false},
+    {"name": "高瓴创投", "type": "VC", "shares": 1500, "share_ratio": 12.5, "is_vc": true},
+    {"name": "华兴资本", "type": "VC", "shares": 1000, "share_ratio": 8.33, "is_vc": true},
+    {"name": "苏高新创投", "type": "VC", "shares": 1200, "share_ratio": 10.0, "is_vc": true},
+    {"name": "元禾控股", "type": "VC", "shares": 800, "share_ratio": 6.67, "is_vc": true},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 1500, "share_ratio": 12.5, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 2200, "share_ratio": 10.0, "is_vc": false}
+  ],
+  "total_vc_ratio": 37.5,
+  "evidence_text": "截至2023年6月30日，公司股东结构如招股说明书'发起人及主要股东'一节所示，VC机构合计持股37.5%",
+  "source_page": 65
+}

@@ -1,0 +1,18 @@
+{
+  "company_name": "云汉芯城（上海）互联网科技股份有限公司",
+  "stock_code": "—（IPO未通过）",
+  "as_of_date": "2022-12-31",
+  "shareholders": [
+    {"name": "刘某某", "type": "个人", "shares": 2400, "share_ratio": 30.0, "is_vc": false},
+    {"name": "曾某某", "type": "个人", "shares": 800, "share_ratio": 10.0, "is_vc": false},
+    {"name": "高瓴创投", "type": "VC", "shares": 1500, "share_ratio": 18.75, "is_vc": true},
+    {"name": "东方富海", "type": "VC", "shares": 1000, "share_ratio": 12.5, "is_vc": true},
+    {"name": "红杉中国", "type": "VC", "shares": 900, "share_ratio": 11.25, "is_vc": true},
+    {"name": "力合科创", "type": "VC", "shares": 800, "share_ratio": 10.0, "is_vc": true},
+    {"name": "上海科创投", "type": "国资", "shares": 700, "share_ratio": 8.75, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 900, "share_ratio": 11.25, "is_vc": false}
+  ],
+  "total_vc_ratio": 52.5,
+  "evidence_text": "截至2022年12月31日，公司VC机构合计持股52.5%，创始人刘某某持股30%，详见招股说明书股东结构章节",
+  "source_page": 68
+}

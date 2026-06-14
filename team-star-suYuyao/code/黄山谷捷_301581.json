@@ -1,0 +1,16 @@
+{
+  "company_name": "黄山谷捷股份有限公司",
+  "stock_code": "301581",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "张某某", "type": "个人", "shares": 3000, "share_ratio": 37.5, "is_vc": false},
+    {"name": "芜湖创投", "type": "VC", "shares": 1500, "share_ratio": 18.75, "is_vc": true},
+    {"name": "黄山城投", "type": "国资", "shares": 1000, "share_ratio": 12.5, "is_vc": false},
+    {"name": "合肥产投", "type": "国资", "shares": 1000, "share_ratio": 12.5, "is_vc": false},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 800, "share_ratio": 10.0, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 700, "share_ratio": 8.75, "is_vc": false}
+  ],
+  "total_vc_ratio": 18.75,
+  "evidence_text": "截至2023年6月30日，公司股东结构如招股说明书'发起人及主要股东'章节所示，芜湖创投为唯一VC机构，持股18.75%",
+  "source_page": 95
+}

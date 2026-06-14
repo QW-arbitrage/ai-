@@ -1,0 +1,18 @@
+{
+  "company_name": "三联锻造股份有限公司",
+  "stock_code": "001282",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "孙某某", "type": "个人", "shares": 3600, "share_ratio": 36.0, "is_vc": false},
+    {"name": "韩某某", "type": "个人", "shares": 1700, "share_ratio": 17.0, "is_vc": false},
+    {"name": "中信证券投资", "type": "VC", "shares": 1200, "share_ratio": 12.0, "is_vc": true},
+    {"name": "国投创合", "type": "VC", "shares": 800, "share_ratio": 8.0, "is_vc": true},
+    {"name": "合肥产投", "type": "国资", "shares": 900, "share_ratio": 9.0, "is_vc": false},
+    {"name": "安徽科创投", "type": "国资", "shares": 400, "share_ratio": 4.0, "is_vc": false},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 800, "share_ratio": 8.0, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 800, "share_ratio": 6.0, "is_vc": false}
+  ],
+  "total_vc_ratio": 20.0,
+  "evidence_text": "截至2023年6月30日，公司VC机构合计持股20%，创始人孙某某为第一大股东，持股36%",
+  "source_page": 55
+}

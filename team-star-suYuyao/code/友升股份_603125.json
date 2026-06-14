@@ -1,0 +1,18 @@
+{
+  "company_name": "上海友升铝业有限公司",
+  "stock_code": "603125",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "罗某某", "type": "个人", "shares": 3150, "share_ratio": 33.0, "is_vc": false},
+    {"name": "王某某", "type": "个人", "shares": 600, "share_ratio": 6.3, "is_vc": false},
+    {"name": "国泰君安创新投资", "type": "VC", "shares": 1350, "share_ratio": 14.17, "is_vc": true},
+    {"name": "临港科创投", "type": "国资", "shares": 1500, "share_ratio": 15.75, "is_vc": false},
+    {"name": "宁德时代投资", "type": "产业资本", "shares": 1000, "share_ratio": 10.5, "is_vc": false},
+    {"name": "上海国际集团", "type": "国资", "shares": 900, "share_ratio": 9.45, "is_vc": false},
+    {"name": "员工持股平台", "type": "合伙企业", "shares": 750, "share_ratio": 7.88, "is_vc": false},
+    {"name": "其他股东", "type": "其他", "shares": 525, "share_ratio": 2.95, "is_vc": false}
+  ],
+  "total_vc_ratio": 14.17,
+  "evidence_text": "截至2023年6月30日，公司VC机构合计持股14.17%，创始人罗某某为第一大股东，持股33%",
+  "source_page": 60
+}
