@@ -1,0 +1,62 @@
+from pydantic import BaseModel, Field, validator
+from typing import List, Optional
+from datetime import datetime
+
+class Investor(BaseModel):
+    name: str = Field(..., description="投资者名称")
+    type: str = Field(..., description="类型: 个人/VC/PE/CVC/产业资本")
+    subscription_amount: Optional[float] = Field(None, description="认缴金额（万元）")
+    share_ratio: Optional[float] = Field(None, description="持股比例（%）")
+    price_per_share: Optional[float] = Field(None, description="每股价格（元）")
+
+    @validator('share_ratio')
+    def check_share_ratio(cls, v):
+        if v is not None and (v < 0 or v > 100):
+            raise ValueError(f'持股比例应在0-100之间，当前值: {v}')
+        return v
+
+class FlowEvent(BaseModel):
+    event_id: str
+    event_date: str
+    event_type: str = Field(..., description="设立/增资/股权转让")
+    before_capital: Optional[float] = None
+    after_capital: Optional[float] = None
+    change_amount: Optional[float] = None
+    change_type: Optional[str] = None
+    investors: List[Investor]
+    evidence_text: str = Field(..., min_length=10)
+    source_page: Optional[int] = None
+
+class EquityFlow(BaseModel):
+    company_name: str
+    stock_code: str
+    events: List[FlowEvent]
+
+class Shareholder(BaseModel):
+    name: str
+    type: str
+    shares: Optional[float] = None
+    share_ratio: Optional[float] = None
+    is_vc: bool = False
+
+    @validator('share_ratio')
+    def check_share_ratio(cls, v):
+        if v is not None and (v < 0 or v > 100):
+            raise ValueError(f'持股比例应在0-100之间，当前值: {v}')
+        return v
+
+class EquityStructure(BaseModel):
+    company_name: str
+    stock_code: str
+    as_of_date: str
+    shareholders: List[Shareholder]
+    total_shares: Optional[float] = None
+    total_vc_ratio: Optional[float] = None
+    evidence_text: str
+    source_page: Optional[int] = None
+
+    @validator('total_vc_ratio')
+    def check_total_vc_ratio(cls, v):
+        if v is not None and (v < 0 or v > 100):
+            raise ValueError(f'VC总持股比例应在0-100之间，当前值: {v}')
+        return v
