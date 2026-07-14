@@ -1,0 +1,32 @@
+# 下载日志
+log_entries = []
+
+for idx, row in df.iterrows():
+    sample_id = row["sample_id"]
+    company = row["company_name"]
+    url = row["prospectus_url"]
+    save_path = os.path.join(pdf_dir, f"{sample_id}_{company}.pdf")
+    
+    print(f"正在下载: {sample_id} {company}")
+    
+    try:
+        r = requests.get(url, headers=headers, timeout=30, stream=True)
+        if r.status_code == 200:
+            with open(save_path, "wb") as f:
+                for chunk in r.iter_content(8192):
+                    f.write(chunk)
+            print(f"  ✅ 成功: {save_path}")
+            log_entries.append({"sample_id": sample_id, "company": company, "status": "success"})
+        else:
+            print(f"  ❌ 失败: HTTP {r.status_code}")
+            log_entries.append({"sample_id": sample_id, "company": company, "status": "failed", "error": f"HTTP {r.status_code}"})
+    except Exception as e:
+        print(f"  ❌ 异常: {e}")
+        log_entries.append({"sample_id": sample_id, "company": company, "status": "failed", "error": str(e)})
+    
+    time.sleep(2)  # 礼貌间隔
+
+# 保存日志
+log_df = pd.DataFrame(log_entries)
+log_df.to_csv("../../logs/download_log.csv", index=False)
+print("\n下载完成！日志已保存到 logs/download_log.csv")
