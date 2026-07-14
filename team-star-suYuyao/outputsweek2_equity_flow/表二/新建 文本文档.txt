@@ -1,0 +1,15 @@
+{
+  "company_name": "黄山谷捷",
+  "stock_code": "301581",
+  "as_of_date": "2023-06-30",
+  "shareholders": [
+    {"name": "张某某", "type": "个人", "shares": 3000, "share_ratio": 37.5, "is_vc": false},
+    {"name": "芜湖创投", "type": "VC", "shares": 1500, "share_ratio": 18.75, "is_vc": true},
+    {"name": "安徽省高新投", "type": "VC", "shares": 2000, "share_ratio": 25.0, "is_vc": true},
+    {"name": "深创投", "type": "VC", "shares": 1500, "share_ratio": 18.75, "is_vc": true}
+  ],
+  "total_shares": 8000,
+  "total_vc_ratio": 62.5,
+  "evidence_text": "上市前股权结构表，见招股书第XX页",
+  "source_page": 95
+}
