@@ -1,0 +1,62 @@
+import os
+import re
+
+input_dir = "../../outputs/week1_candidate_texts"
+output_dir = "../../outputs/week1_candidate_texts"
+os.makedirs(output_dir, exist_ok=True)
+
+# 关键词列表
+keywords = ["历史沿革", "股本形成", "历次增资", "股权转让", "增资", "股东情况", "股权结构", "VC", "PE", "创业投资"]
+
+log_entries = []
+
+for txt_file in os.listdir(input_dir):
+    if not txt_file.endswith(".txt"):
+        continue
+    
+    txt_path = os.path.join(input_dir, txt_file)
+    print(f"正在定位: {txt_file}")
+    
+    with open(txt_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    
+    lines = text.split("\n")
+    found_sections = []
+    
+    for i, line in enumerate(lines):
+        for kw in keywords:
+            if kw in line:
+                start = max(0, i - 10)
+                end = min(len(lines), i + 30)
+                context = "\n".join(lines[start:end])
+                found_sections.append({
+                    "keyword": kw,
+                    "line": i + 1,
+                    "context": context[:500]  # 只保留前500字符
+                })
+                break
+    
+    # 保存定位结果
+    located_filename = txt_file.replace(".txt", "_located.txt")
+    located_path = os.path.join(output_dir, located_filename)
+    
+    with open(located_path, "w", encoding="utf-8") as f:
+        f.write(f"文件: {txt_file}\n")
+        f.write(f"找到 {len(found_sections)} 个相关章节\n\n")
+        for sec in found_sections:
+            f.write(f"关键词: {sec['keyword']}\n")
+            f.write(f"位置: 第{sec['line']}行\n")
+            f.write(f"上下文:\n{sec['context']}\n")
+            f.write("=" * 50 + "\n\n")
+    
+    log_entries.append({"filename": txt_file, "chapters_found": len(found_sections)})
+    print(f"  ✅ 找到 {len(found_sections)} 个相关章节")
+
+# 保存日志
+import csv
+with open("../../logs/locate_log.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["filename", "chapters_found"])
+    writer.writeheader()
+    writer.writerows(log_entries)
+
+print("\n定位完成！日志已保存到 logs/locate_log.csv")
