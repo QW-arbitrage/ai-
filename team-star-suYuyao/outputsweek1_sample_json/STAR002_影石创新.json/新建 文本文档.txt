@@ -1,0 +1,11 @@
+{
+  "company_name": "影石创新股份有限公司",
+  "stock_code": "688758",
+  "events": [
+    {"event_id": "1", "event_date": "2012-05", "event_type": "设立", "investors": [{"name": "创始人", "type": "个人", "amount": null, "share_ratio": null}]},
+    {"event_id": "2", "event_date": "2016-09", "event_type": "增资", "investors": [{"name": "经纬中国", "type": "VC", "amount": 3000, "share_ratio": 12.0}]},
+    {"event_id": "3", "event_date": "2016-09", "event_type": "增资", "investors": [{"name": "启明创投", "type": "VC", "amount": 2000, "share_ratio": 8.0}]},
+    {"event_id": "4", "event_date": "2018-12", "event_type": "增资", "investors": [{"name": "红杉资本", "type": "VC", "amount": 8000, "share_ratio": 10.5}]},
+    {"event_id": "5", "event_date": "2020-06", "event_type": "股权转让", "investors": [{"name": "高瓴资本", "type": "PE", "amount": 5000, "price_per_share": 12.5}]}
+  ]
+}
