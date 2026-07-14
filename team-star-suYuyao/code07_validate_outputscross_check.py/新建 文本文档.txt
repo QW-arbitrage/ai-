@@ -1,0 +1,67 @@
+import os
+import json
+import csv
+from pydantic import ValidationError
+from pydantic_schema import EquityFlow, EquityStructure
+
+def validate_flow_file(filepath):
+    """校验认缴流量表"""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    try:
+        flow = EquityFlow(**data)
+        return True, "通过", None
+    except ValidationError as e:
+        return False, "校验失败", str(e)
+
+def validate_structure_file(filepath):
+    """校验股权结构存量表"""
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    try:
+        structure = EquityStructure(**data)
+        # 额外检查：VC持股比例之和是否与total_vc_ratio一致
+        vc_sum = sum([s.share_ratio for s in structure.shareholders if s.is_vc and s.share_ratio])
+        if structure.total_vc_ratio and abs(vc_sum - structure.total_vc_ratio) > 0.1:
+            return False, "VC比例不一致", f"VC比例之和={vc_sum}, total_vc_ratio={structure.total_vc_ratio}"
+        return True, "通过", None
+    except ValidationError as e:
+        return False, "校验失败", str(e)
+
+# 批量校验
+flow_dir = "../../outputs/week2_equity_flow"
+structure_dir = "../../outputs/week2_equity_structure"
+
+log_entries = []
+
+for filename in os.listdir(flow_dir):
+    if filename.endswith(".json"):
+        filepath = os.path.join(flow_dir, filename)
+        ok, msg, detail = validate_flow_file(filepath)
+        log_entries.append({
+            "file": filename,
+            "type": "flow",
+            "status": "✅" if ok else "❌",
+            "message": msg,
+            "detail": detail
+        })
+
+for filename in os.listdir(structure_dir):
+    if filename.endswith(".json"):
+        filepath = os.path.join(structure_dir, filename)
+        ok, msg, detail = validate_structure_file(filepath)
+        log_entries.append({
+            "file": filename,
+            "type": "structure",
+            "status": "✅" if ok else "❌",
+            "message": msg,
+            "detail": detail
+        })
+
+# 保存日志
+with open("../../logs/cross_check_log.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["file", "type", "status", "message", "detail"])
+    writer.writeheader()
+    writer.writerows(log_entries)
+
+print("交叉校验完成！日志保存至 logs/cross_check_log.csv")
