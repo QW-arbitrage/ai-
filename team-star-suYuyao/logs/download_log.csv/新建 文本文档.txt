@@ -1,0 +1,9 @@
+sample_id,company_name,status,error_message
+STAR001,赛分科技,success,
+STAR002,影石创新,success,
+GEM001,黄山谷捷,success,
+GEM002,云汉芯城,success,
+MB001,三联锻造,success,
+MB002,友升股份,success,
+BSE001,三协电机,success,
+BSE002,星图测控,success,
