@@ -1,0 +1,11 @@
+{
+  "company_name": "三协电机股份有限公司",
+  "stock_code": "920110",
+  "events": [
+    {"event_id": "1", "event_date": "2013-04", "event_type": "设立", "investors": [{"name": "创始人", "type": "个人", "amount": null, "share_ratio": null}]},
+    {"event_id": "2", "event_date": "2016-07", "event_type": "增资", "investors": [{"name": "常州创投", "type": "VC", "amount": 300, "share_ratio": 3.0}]},
+    {"event_id": "3", "event_date": "2018-11", "event_type": "增资", "investors": [{"name": "江苏省政府投资基金", "type": "VC", "amount": 800, "share_ratio": 4.2}]},
+    {"event_id": "4", "event_date": "2020-05", "event_type": "增资", "investors": [{"name": "深创投", "type": "VC", "amount": 2000, "share_ratio": 5.1}]},
+    {"event_id": "5", "event_date": "2022-03", "event_type": "增资", "investors": [{"name": "中信资本", "type": "PE", "amount": 5000, "share_ratio": 6.5}], "post_valuation": 77000}
+  ]
+}
