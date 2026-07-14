@@ -1,0 +1,94 @@
+import os
+import json
+import re
+
+input_dir = "../../outputs/week1_candidate_texts"
+output_dir = "../../outputs/week1_sample_json"
+os.makedirs(output_dir, exist_ok=True)
+
+# 简单规则提取（模拟AI，实际可以换成API调用）
+def extract_by_rules(text, company_name, stock_code):
+    events = []
+    event_id = 1
+    
+    # 寻找"增资"相关的段落
+    lines = text.split("\n")
+    for i, line in enumerate(lines):
+        if "增资" in line or "股权转让" in line:
+            # 提取日期
+            date_match = re.search(r"(\d{4})年(\d{1,2})月", line)
+            event_date = f"{date_match.group(1)}-{date_match.group(2).zfill(2)}" if date_match else ""
+            
+            # 提取机构名称
+            investors = []
+            investor_match = re.search(r"([\u4e00-\u9fa5]{2,10}(创投|基金|资本|投资))", line)
+            if investor_match:
+                investors.append({"name": investor_match.group(1), "type": "VC"})
+            
+            # 提取金额
+            amount_match = re.search(r"(\d+(?:\.\d+)?)\s*万?元?", line)
+            amount = float(amount_match.group(1)) if amount_match else None
+            
+            if investor_match or date_match:
+                events.append({
+                    "event_id": str(event_id),
+                    "event_date": event_date,
+                    "event_type": "增资" if "增资" in line else "股权转让",
+                    "investors": investors if investors else [{"name": "未披露", "type": "未知"}],
+                    "amount": amount
+                })
+                event_id += 1
+                if event_id > 5:  # 只提取前5条
+                    break
+    
+    return {
+        "company_name": company_name,
+        "stock_code": stock_code,
+        "events": events
+    }
+
+# 读取公司清单
+import csv
+company_list = []
+with open("../../company_lists/week1_public_samples.csv", "r", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        company_list.append(row)
+
+log_entries = []
+
+for company in company_list:
+    sample_id = company["sample_id"]
+    company_name = company["company_name"]
+    stock_code = company["stock_code"]
+    
+    txt_filename = f"{sample_id}_{company_name}.txt"
+    txt_path = os.path.join(input_dir, txt_filename)
+    
+    if not os.path.exists(txt_path):
+        print(f"⚠️ 文件不存在: {txt_path}")
+        log_entries.append({"sample_id": sample_id, "company": company_name, "status": "skipped", "reason": "file_not_found"})
+        continue
+    
+    with open(txt_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    
+    result = extract_by_rules(text, company_name, stock_code)
+    
+    json_filename = f"{sample_id}_{company_name}.json"
+    json_path = os.path.join(output_dir, json_filename)
+    
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    
+    print(f"✅ 已生成: {json_filename} (事件数: {len(result['events'])})")
+    log_entries.append({"sample_id": sample_id, "company": company_name, "status": "success", "events": len(result['events'])})
+
+# 保存日志
+import csv
+with open("../../logs/extraction_log.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["sample_id", "company", "status", "events", "reason"])
+    writer.writeheader()
+    writer.writerows(log_entries)
+
+print("\n提取完成！日志已保存到 logs/extraction_log.csv")
