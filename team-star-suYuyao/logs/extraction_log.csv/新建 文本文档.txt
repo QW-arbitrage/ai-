@@ -1,0 +1,9 @@
+sample_id,company_name,status,events_count
+STAR001,赛分科技,success,5
+STAR002,影石创新,success,5
+GEM001,黄山谷捷,success,4
+GEM002,云汉芯城,success,6
+MB001,三联锻造,success,5
+MB002,友升股份,success,6
+BSE001,三协电机,success,5
+BSE002,星图测控,success,6
