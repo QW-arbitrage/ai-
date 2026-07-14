@@ -1,0 +1,12 @@
+{
+  "company_name": "云汉芯城股份有限公司",
+  "stock_code": "301563",
+  "events": [
+    {"event_id": "1", "event_date": "2014-07", "event_type": "设立", "investors": [{"name": "创始人", "type": "个人", "amount": null, "share_ratio": null}]},
+    {"event_id": "2", "event_date": "2016-11", "event_type": "增资", "investors": [{"name": "上海创投", "type": "VC", "amount": 500, "share_ratio": 4.2}]},
+    {"event_id": "3", "event_date": "2018-04", "event_type": "增资", "investors": [{"name": "小米基金", "type": "CVC", "amount": 8000, "price_per_share": 18.5, "share_ratio": 5.5}]},
+    {"event_id": "4", "event_date": "2019-12", "event_type": "增资", "investors": [{"name": "深创投", "type": "VC", "amount": 5000, "share_ratio": 4.2}]},
+    {"event_id": "5", "event_date": "2019-12", "event_type": "增资", "investors": [{"name": "高瓴资本", "type": "PE", "amount": 6000, "share_ratio": 5.0}]},
+    {"event_id": "6", "event_date": "2021-03", "event_type": "股权转让", "investors": [{"name": "中金资本", "type": "PE", "amount": 2000}]}
+  ]
+}
