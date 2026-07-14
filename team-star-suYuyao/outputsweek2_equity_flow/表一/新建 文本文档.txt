@@ -1,0 +1,35 @@
+{
+  "company_name": "黄山谷捷",
+  "stock_code": "301581",
+  "events": [
+    {
+      "event_id": "1",
+      "event_date": "2015-06",
+      "event_type": "设立",
+      "before_capital": 0,
+      "after_capital": 5000,
+      "change_amount": 5000,
+      "change_type": "出资设立",
+      "investors": [
+        {"name": "张某某", "type": "个人", "subscription_amount": 3000, "share_ratio": 60.0},
+        {"name": "李某某", "type": "个人", "subscription_amount": 2000, "share_ratio": 40.0}
+      ],
+      "evidence_text": "2015年6月，由张某某、李某某共同出资设立，注册资本5000万元",
+      "source_page": 78
+    },
+    {
+      "event_id": "2",
+      "event_date": "2017-03",
+      "event_type": "增资",
+      "before_capital": 5000,
+      "after_capital": 6500,
+      "change_amount": 1500,
+      "change_type": "货币增资",
+      "investors": [
+        {"name": "芜湖创投", "type": "VC", "subscription_amount": 1500, "price_per_share": 1.2, "share_ratio": 23.08}
+      ],
+      "evidence_text": "2017年3月，注册资本增加至6500万元，芜湖创投以货币形式认缴1500万元",
+      "source_page": 82
+    }
+  ]
+}
