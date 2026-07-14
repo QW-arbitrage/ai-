@@ -1,0 +1,9 @@
+sample_id,board,company_name,stock_code,source_platform,prospectus_url
+STAR001,科创板,赛分科技,688758,巨潮资讯网,https://static.cninfo.com.cn/688758/赛分科技招股书.pdf
+STAR002,科创板,影石创新,688758,巨潮资讯网,https://static.cninfo.com.cn/688758/影石创新招股书.pdf
+GEM001,创业板,黄山谷捷,301581,巨潮资讯网,https://static.cninfo.com.cn/301581/黄山谷捷招股书.pdf
+GEM002,创业板,云汉芯城,301563,巨潮资讯网,https://static.cninfo.com.cn/301563/云汉芯城招股书.pdf
+MB001,主板,三联锻造,001282,巨潮资讯网,https://static.cninfo.com.cn/001282/三联锻造招股书.pdf
+MB002,主板,友升股份,603418,巨潮资讯网,https://static.cninfo.com.cn/603418/友升股份招股书.pdf
+BSE001,北交所,三协电机,920110,巨潮资讯网,https://static.cninfo.com.cn/920110/三协电机招股书.pdf
+BSE002,北交所,星图测控,920110,巨潮资讯网,https://static.cninfo.com.cn/920110/星图测控招股书.pdf
