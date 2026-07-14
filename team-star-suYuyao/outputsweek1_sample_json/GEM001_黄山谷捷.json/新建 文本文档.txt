@@ -1,0 +1,10 @@
+{
+  "company_name": "黄山谷捷股份有限公司",
+  "stock_code": "301581",
+  "events": [
+    {"event_id": "1", "event_date": "2015-06", "event_type": "设立", "investors": [{"name": "张某某", "type": "个人", "amount": 3000, "share_ratio": 60}]},
+    {"event_id": "2", "event_date": "2017-03", "event_type": "增资", "investors": [{"name": "芜湖创投", "type": "VC", "amount": 1500, "price_per_share": 1.2, "share_ratio": 23.08}]},
+    {"event_id": "3", "event_date": "2018-09", "event_type": "增资", "investors": [{"name": "安徽省高新投", "type": "VC", "amount": 2000, "share_ratio": 8.5}]},
+    {"event_id": "4", "event_date": "2020-04", "event_type": "股权转让", "investors": [{"name": "深创投", "type": "VC", "amount": null, "price_per_share": 3.5}]}
+  ]
+}
