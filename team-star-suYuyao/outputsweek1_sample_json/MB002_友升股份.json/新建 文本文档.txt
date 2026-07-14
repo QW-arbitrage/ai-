@@ -1,0 +1,12 @@
+{
+  "company_name": "友升股份有限公司",
+  "stock_code": "603418",
+  "events": [
+    {"event_id": "1", "event_date": "2011-03", "event_type": "设立", "investors": [{"name": "创始人", "type": "个人", "amount": null, "share_ratio": null}]},
+    {"event_id": "2", "event_date": "2015-08", "event_type": "增资", "investors": [{"name": "上海创投", "type": "VC", "amount": 600, "share_ratio": 3.2}]},
+    {"event_id": "3", "event_date": "2017-12", "event_type": "增资", "investors": [{"name": "中小基金", "type": "VC", "amount": 1200, "share_ratio": 4.5}]},
+    {"event_id": "4", "event_date": "2019-06", "event_type": "增资", "investors": [{"name": "深创投", "type": "VC", "amount": 4000, "share_ratio": 3.8}]},
+    {"event_id": "5", "event_date": "2019-06", "event_type": "增资", "investors": [{"name": "达晨创投", "type": "VC", "amount": 3000, "share_ratio": 2.9}]},
+    {"event_id": "6", "event_date": "2020-11", "event_type": "股权转让", "investors": [{"name": "高瓴资本", "type": "PE", "amount": 8000, "price_per_share": 8.2}]}
+  ]
+}
