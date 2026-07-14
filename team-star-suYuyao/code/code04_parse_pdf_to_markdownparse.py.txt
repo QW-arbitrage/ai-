@@ -1,0 +1,55 @@
+import os
+import PyPDF2
+
+pdf_dir = "../../pdfs"
+output_dir = "../../outputs/week1_candidate_texts"
+os.makedirs(output_dir, exist_ok=True)
+
+log_entries = []
+
+for filename in os.listdir(pdf_dir):
+    if not filename.endswith(".pdf"):
+        continue
+    
+    pdf_path = os.path.join(pdf_dir, filename)
+    txt_filename = filename.replace(".pdf", ".txt")
+    txt_path = os.path.join(output_dir, txt_filename)
+    
+    print(f"正在解析: {filename}")
+    
+    try:
+        with open(pdf_path, "rb") as f:
+            reader = PyPDF2.PdfReader(f)
+            text = ""
+            for page_num, page in enumerate(reader.pages, 1):
+                page_text = page.extract_text()
+                if page_text:
+                    text += f"\n--- 第{page_num}页 ---\n"
+                    text += page_text
+                    
+                    # 找到"历史沿革"章节后，只保留前后50页的内容（节省时间）
+                    if "历史沿革" in page_text or "股本形成" in page_text:
+                        # 简单模拟：找到后继续提取50页然后退出
+                        pass
+        
+        if text.strip():
+            with open(txt_path, "w", encoding="utf-8") as f:
+                f.write(text)
+            print(f"  ✅ 成功: {txt_path}")
+            log_entries.append({"filename": filename, "status": "success", "pages": len(reader.pages)})
+        else:
+            print(f"  ⚠️ 文本为空，可能是扫描版")
+            log_entries.append({"filename": filename, "status": "empty", "error": "可能是扫描版PDF"})
+    
+    except Exception as e:
+        print(f"  ❌ 失败: {e}")
+        log_entries.append({"filename": filename, "status": "failed", "error": str(e)})
+
+# 保存日志
+import csv
+with open("../../logs/parse_log.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["filename", "status", "pages", "error"])
+    writer.writeheader()
+    writer.writerows(log_entries)
+
+print("\n解析完成！日志已保存到 logs/parse_log.csv")
