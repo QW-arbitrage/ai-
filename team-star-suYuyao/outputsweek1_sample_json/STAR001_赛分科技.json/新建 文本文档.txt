@@ -1,0 +1,11 @@
+{
+  "company_name": "赛分科技股份有限公司",
+  "stock_code": "688758",
+  "events": [
+    {"event_id": "1", "event_date": "2010-08", "event_type": "设立", "investors": [{"name": "张某", "type": "个人", "amount": null, "share_ratio": null}]},
+    {"event_id": "2", "event_date": "2015-06", "event_type": "增资", "investors": [{"name": "苏州工业园区创投", "type": "VC", "amount": null, "share_ratio": 12.5}]},
+    {"event_id": "3", "event_date": "2018-03", "event_type": "增资", "investors": [{"name": "元禾控股", "type": "VC", "amount": null, "price_per_share": 4.5, "share_ratio": 8.6}]},
+    {"event_id": "4", "event_date": "2018-03", "event_type": "增资", "investors": [{"name": "深创投", "type": "VC", "amount": null, "share_ratio": 5.2}]},
+    {"event_id": "5", "event_date": "2021-08", "event_type": "增资", "investors": [{"name": "高瓴资本", "type": "PE", "amount": 12000, "share_ratio": 6.2}], "post_valuation": 194000}
+  ]
+}
