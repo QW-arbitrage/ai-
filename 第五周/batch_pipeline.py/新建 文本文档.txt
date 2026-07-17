@@ -1,0 +1,163 @@
+import os
+import json
+import re
+import glob
+from pathlib import Path
+
+# ========== 配置 ==========
+COMPANIES = [
+    {"code": "001282", "name": "三联锻造", "board": "主板"},
+    {"code": "301563", "name": "云汉芯城", "board": "创业板"},
+    {"code": "301581", "name": "黄山谷捷", "board": "创业板"},
+    {"code": "603418", "name": "友升股份", "board": "主板"},
+    {"code": "688758", "name": "赛分科技", "board": "科创板"},
+    {"code": "688775", "name": "影石创新", "board": "科创板"},
+    {"code": "920100", "name": "三协电机", "board": "北交所"},
+    {"code": "920116", "name": "星图测控", "board": "北交所"}
+]
+
+# 关键词列表
+SECTION_KEYWORDS = ["历史沿革", "股本演变", "历次增资", "股权转让", "发行人基本情况"]
+EVENT_KEYWORDS = {
+    "设立": ["设立", "出资设立", "注册资本"],
+    "增资": ["增资", "认购", "注册资本增至", "增加注册资本"],
+    "股权转让": ["转让", "受让", "股权转让", "股份转让"],
+    "整体变更": ["整体变更", "折股", "变更为股份有限公司"],
+    "资本公积转增": ["转增", "资本公积转增"]
+}
+
+# ========== 章节定位 ==========
+def locate_chapters(text, keywords):
+    """定位目标章节的起始和结束位置"""
+    lines = text.split('\n')
+    start_page = None
+    end_page = None
+    
+    for i, line in enumerate(lines):
+        for kw in keywords:
+            if kw in line:
+                if start_page is None:
+                    start_page = i
+                # 找到包含关键词的行，记录位置
+                if "页" in line:
+                    try:
+                        page_num = int(re.search(r'(\d+)', line).group(1))
+                    except:
+                        page_num = i // 40 + 1
+                else:
+                    page_num = i // 40 + 1
+    
+    if start_page is None:
+        return {"start": None, "end": None, "found": False}
+    
+    # 结束页：从起始页开始，查找下一个章节边界
+    end_page = start_page + 200
+    for i in range(start_page + 1, min(start_page + 300, len(lines))):
+        if "第" in lines[i] and "节" in lines[i] and i > start_page + 10:
+            if "基本情况" not in lines[i] and "历史" not in lines[i]:
+                end_page = i
+                break
+    
+    return {"start": start_page, "end": end_page, "found": True}
+
+def extract_candidates(text, start_pos, end_pos, keywords):
+    """在目标范围内提取候选事件"""
+    lines = text.split('\n')[start_pos:end_pos]
+    candidates = []
+    
+    for i, line in enumerate(lines):
+        for event_type, kw_list in keywords.items():
+            for kw in kw_list:
+                if kw in line:
+                    candidates.append({
+                        "type": event_type,
+                        "keyword": kw,
+                        "text": line.strip(),
+                        "line": i + start_pos,
+                        "page": (i + start_pos) // 40 + 1,
+                        "quality": "high" if "万" in line or "股" in line else "medium"
+                    })
+                    break
+            else:
+                continue
+            break
+    
+    return candidates
+
+# ========== 主流程 ==========
+def process_company(company_code, company_name):
+    """处理单家公司"""
+    print(f"处理: {company_code} {company_name}")
+    
+    # 模拟读取PDF解析后的Markdown文本
+    # 实际使用时，需要先运行MinerU将PDF转为Markdown
+    markdown_file = f"./pdfs/{company_code}_{company_name}.md"
+    if not os.path.exists(markdown_file):
+        print(f"  ⚠️ Markdown文件不存在: {markdown_file}")
+        return
+    
+    with open(markdown_file, 'r', encoding='utf-8') as f:
+        text = f.read()
+    
+    # 章节定位
+    chapter_result = locate_chapters(text, SECTION_KEYWORDS)
+    if not chapter_result["found"]:
+        print(f"  ❌ 未找到目标章节")
+        return
+    
+    print(f"  ✅ 章节定位: 第{chapter_result['start']}行 - 第{chapter_result['end']}行")
+    
+    # 候选事件提取
+    candidates = extract_candidates(
+        text, 
+        chapter_result["start"], 
+        chapter_result["end"], 
+        EVENT_KEYWORDS
+    )
+    
+    print(f"  ✅ 候选事件: {len(candidates)} 条")
+    
+    # 按质量分级统计
+    high = [c for c in candidates if c["quality"] == "high"]
+    medium = [c for c in candidates if c["quality"] == "medium"]
+    
+    print(f"     High: {len(high)}, Medium: {len(medium)}")
+    
+    # 保存结果
+    output_dir = f"./outputs/{company_code}_{company_name}"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    with open(f"{output_dir}/chapters.json", "w", encoding='utf-8') as f:
+        json.dump(chapter_result, f, ensure_ascii=False, indent=2)
+    
+    with open(f"{output_dir}/candidates.json", "w", encoding='utf-8') as f:
+        json.dump(candidates, f, ensure_ascii=False, indent=2)
+    
+    return {
+        "company": company_name,
+        "code": company_code,
+        "chapters": chapter_result,
+        "candidates": candidates,
+        "high_count": len(high),
+        "medium_count": len(medium)
+    }
+
+# ========== 主程序 ==========
+if __name__ == "__main__":
+    print("=" * 50)
+    print("Week 5 批量处理 - 章节定位与候选事件提取")
+    print("=" * 50)
+    
+    results = []
+    for company in COMPANIES:
+        result = process_company(company["code"], company["name"])
+        if result:
+            results.append(result)
+    
+    # 保存汇总
+    with open("./outputs/summary.json", "w", encoding='utf-8') as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+    
+    print("\n" + "=" * 50)
+    print(f"处理完成！共处理 {len(results)} 家公司")
+    print("汇总已保存至 outputs/summary.json")
