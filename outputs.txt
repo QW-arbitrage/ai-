@@ -1,0 +1,58 @@
+{
+  "company": "黄山谷捷",
+  "stock_code": "301581",
+  "flow_checks": [
+    {
+      "event_id": "1",
+      "event_type": "设立",
+      "before": 0,
+      "after": 5000,
+      "change": 5000,
+      "expected_after": 5000,
+      "diff": 0,
+      "status": "pass",
+      "note": "设立：0→5000，无差额"
+    },
+    {
+      "event_id": "2",
+      "event_type": "增资",
+      "before": 5000,
+      "after": 6500,
+      "change": 1500,
+      "expected_after": 6500,
+      "diff": 0,
+      "status": "pass",
+      "note": "增资：5000→6500，无差额"
+    },
+    {
+      "event_id": "3",
+      "event_type": "增资",
+      "before": 6500,
+      "after": 8000,
+      "change": 1500,
+      "expected_after": 8000,
+      "diff": 0,
+      "status": "pass",
+      "note": "增资：6500→8000，无差额"
+    }
+  ],
+  "snapshot_check": {
+    "as_of_date": "2023-06-30",
+    "shareholders": [
+      {"name": "张某某", "shares": 3000, "share_ratio": 37.5, "is_vc": false},
+      {"name": "芜湖创投", "shares": 1500, "share_ratio": 18.75, "is_vc": true},
+      {"name": "安徽省高新投", "shares": 2000, "share_ratio": 25.0, "is_vc": true},
+      {"name": "深创投", "shares": 1500, "share_ratio": 18.75, "is_vc": true}
+    ],
+    "total_shares": 8000,
+    "ratio_sum": 100.0,
+    "vc_ratio_sum": 62.5,
+    "status": "pass",
+    "note": "总持股比例=100%，VC持股比例=62.5%"
+  },
+  "summary": {
+    "total_events": 3,
+    "all_pass": true,
+    "message": "黄山谷捷全部3条事件流量校验通过，存量持股比例之和=100%"
+  }
+}
