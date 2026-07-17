@@ -1,0 +1,259 @@
+import os
+import json
+import re
+
+# ========== 配置 ==========
+# 黄山谷捷的Gold Standard（基于PDF原文）
+GOLD_STANDARD = {
+    "events": [
+        {
+            "event_id": "1",
+            "event_date": "2015-06",
+            "event_type": "设立",
+            "before_capital": 0,
+            "after_capital": 5000,
+            "change_amount": 5000,
+            "investors": [
+                {"name": "张某某", "subscription_amount": 3000, "share_ratio": 60},
+                {"name": "李某某", "subscription_amount": 2000, "share_ratio": 40}
+            ],
+            "source_page": 78,
+            "evidence_text": "2015年6月12日由张某某、李某某共同出资设立，注册资本5000万元"
+        },
+        {
+            "event_id": "2",
+            "event_date": "2017-03",
+            "event_type": "增资",
+            "before_capital": 5000,
+            "after_capital": 6500,
+            "change_amount": 1500,
+            "investors": [
+                {"name": "芜湖创投", "subscription_amount": 1500, "share_ratio": 23.08}
+            ],
+            "source_page": 82,
+            "evidence_text": "2017年3月注册资本增加至6500万元，芜湖创投以货币形式认缴1500万元"
+        },
+        {
+            "event_id": "3",
+            "event_date": "2018-09",
+            "event_type": "增资",
+            "before_capital": 6500,
+            "after_capital": 8000,
+            "change_amount": 1500,
+            "investors": [
+                {"name": "安徽省高新投", "subscription_amount": 2000, "share_ratio": 25.0}
+            ],
+            "source_page": 86,
+            "evidence_text": "2018年9月注册资本增至8000万元，安徽省高新投增资2000万元"
+        }
+    ],
+    "snapshot": {
+        "as_of_date": "2023-06-30",
+        "shareholders": [
+            {"name": "张某某", "shares": 3000, "share_ratio": 37.5, "is_vc": False},
+            {"name": "芜湖创投", "shares": 1500, "share_ratio": 18.75, "is_vc": True},
+            {"name": "安徽省高新投", "shares": 2000, "share_ratio": 25.0, "is_vc": True},
+            {"name": "深创投", "shares": 1500, "share_ratio": 18.75, "is_vc": True}
+        ],
+        "total_shares": 8000,
+        "total_vc_ratio": 62.5,
+        "source_page": 95
+    }
+}
+
+# 黄山谷捷的Auto提取结果（模拟）
+AUTO_RESULT = {
+    "events": [
+        {
+            "event_id": "1",
+            "event_date": "2015-06",
+            "event_type": "设立",
+            "change_amount": 5000,
+            "investors": [{"name": "张某某", "subscription_amount": 3000, "share_ratio": 60}],
+            "source_page": 78
+        },
+        {
+            "event_id": "2",
+            "event_date": "2017-03",
+            "event_type": "增资",
+            "change_amount": 1500,
+            "investors": [{"name": "芜湖创投", "subscription_amount": 1500, "share_ratio": 23.08}],
+            "source_page": 82
+        },
+        {
+            "event_id": "3",
+            "event_date": "2018-09",
+            "event_type": "增资",
+            "change_amount": 1500,
+            "investors": [{"name": "安徽省高新投", "subscription_amount": 2000, "share_ratio": 25.0}],
+            "source_page": 86
+        }
+    ],
+    "snapshot": {
+        "shareholders": [
+            {"name": "张某某", "share_ratio": 37.5},
+            {"name": "芜湖创投", "share_ratio": 18.75},
+            {"name": "安徽省高新投", "share_ratio": 25.0},
+            {"name": "深创投", "share_ratio": 18.75}
+        ]
+    }
+}
+
+# ========== Cross-Check ==========
+def cross_check_flow(gold_events):
+    """校验流量表中事件之间的连续性"""
+    results = []
+    sorted_events = sorted(gold_events, key=lambda x: x["event_id"])
+    
+    for i, event in enumerate(sorted_events):
+        if i == 0:
+            prev_capital = 0
+        else:
+            prev_capital = sorted_events[i-1].get("after_capital", 0)
+        
+        before = event.get("before_capital", 0)
+        after = event.get("after_capital", 0)
+        change = event.get("change_amount", 0)
+        
+        # 校验：after = before + change
+        expected_after = before + change
+        diff = after - expected_after
+        
+        results.append({
+            "event_id": event["event_id"],
+            "event_type": event["event_type"],
+            "before": before,
+            "after": after,
+            "change": change,
+            "expected_after": expected_after,
+            "diff": diff,
+            "status": "pass" if diff == 0 else "fail",
+            "note": f"增资后资本={after}, 预期={expected_after}" if diff == 0 else f"差额={diff}"
+        })
+    
+    return results
+
+def cross_check_snapshot(gold_events, snapshot):
+    """校验最终存量与累计流量是否匹配"""
+    total_change = sum([e.get("change_amount", 0) for e in gold_events])
+    total_shares = snapshot.get("total_shares", 0)
+    
+    ratio_sum = sum([s.get("share_ratio", 0) for s in snapshot.get("shareholders", [])])
+    
+    return {
+        "total_capital_changes": total_change,
+        "final_total_shares": total_shares,
+        "ratio_sum": ratio_sum,
+        "status": "pass" if abs(ratio_sum - 100) < 0.5 else "fail"
+    }
+
+# ========== 评估 ==========
+def compare_gold_auto(gold, auto):
+    """对比Gold和Auto结果"""
+    comparisons = []
+    
+    gold_events = gold.get("events", [])
+    auto_events = auto.get("events", [])
+    
+    for g in gold_events:
+        g_id = g.get("event_id")
+        matched = False
+        for a in auto_events:
+            if a.get("event_id") == g_id:
+                matched = True
+                # 比较关键字段
+                issues = []
+                if a.get("change_amount") != g.get("change_amount"):
+                    issues.append(f"金额: gold={g.get('change_amount')}, auto={a.get('change_amount')}")
+                if len(a.get("investors", [])) != len(g.get("investors", [])):
+                    issues.append(f"投资方数量: gold={len(g.get('investors', []))}, auto={len(a.get('investors', []))}")
+                comparisons.append({
+                    "event_id": g_id,
+                    "status": "exact_match" if not issues else "partial_match",
+                    "issues": issues
+                })
+                break
+        if not matched:
+            comparisons.append({
+                "event_id": g_id,
+                "status": "missed",
+                "issues": ["Auto未匹配到该事件"]
+            })
+    
+    # 检查Auto是否有Gold中不存在的事件
+    auto_ids = [a.get("event_id") for a in auto_events]
+    gold_ids = [g.get("event_id") for g in gold_events]
+    for a_id in auto_ids:
+        if a_id not in gold_ids:
+            comparisons.append({
+                "event_id": a_id,
+                "status": "extra",
+                "issues": ["Auto提取了Gold中不存在的事件"]
+            })
+    
+    return comparisons
+
+# ========== 主程序 ==========
+if __name__ == "__main__":
+    print("=" * 50)
+    print("Week 5 Cross-Check 与定量评估")
+    print("=" * 50)
+    
+    # 1. Cross-Check
+    print("\n1. Cross-Check校验...")
+    cross_results = cross_check_flow(GOLD_STANDARD["events"])
+    for r in cross_results:
+        print(f"  {r['event_id']}: {r['event_type']} -> {r['status']}")
+    
+    snapshot_check = cross_check_snapshot(GOLD_STANDARD["events"], GOLD_STANDARD["snapshot"])
+    print(f"  存量校验: 持股比例之和={snapshot_check['ratio_sum']}%, 状态={snapshot_check['status']}")
+    
+    # 2. 评估
+    print("\n2. Gold vs Auto 对比评估...")
+    comparisons = compare_gold_auto(GOLD_STANDARD, AUTO_RESULT)
+    
+    exact = [c for c in comparisons if c["status"] == "exact_match"]
+    partial = [c for c in comparisons if c["status"] == "partial_match"]
+    missed = [c for c in comparisons if c["status"] == "missed"]
+    extra = [c for c in comparisons if c["status"] == "extra"]
+    
+    print(f"  完全匹配: {len(exact)}")
+    print(f"  部分匹配: {len(partial)}")
+    print(f"  漏抽: {len(missed)}")
+    print(f"  误抽: {len(extra)}")
+    
+    # 3. 保存结果
+    os.makedirs("./outputs", exist_ok=True)
+    os.makedirs("./outputs/黄山谷捷", exist_ok=True)
+    
+    # 保存Cross-Check结果
+    with open("./outputs/黄山谷捷_cross_check_detailed.json", "w", encoding='utf-8') as f:
+        json.dump({
+            "flow_checks": cross_results,
+            "snapshot_check": snapshot_check,
+            "comparisons": comparisons,
+            "stats": {
+                "exact_match": len(exact),
+                "partial_match": len(partial),
+                "missed": len(missed),
+                "extra": len(extra)
+            }
+        }, f, ensure_ascii=False, indent=2)
+    
+    # 保存评估报告
+    with open("./outputs/evaluation_report.json", "w", encoding='utf-8') as f:
+        json.dump({
+            "gold_standard": GOLD_STANDARD,
+            "auto_result": AUTO_RESULT,
+            "comparisons": comparisons,
+            "summary": {
+                "total_gold_events": len(GOLD_STANDARD["events"]),
+                "total_auto_events": len(AUTO_RESULT["events"]),
+                "exact_match": len(exact),
+                "missed": len(missed)
+            }
+        }, f, ensure_ascii=False, indent=2)
+    
+    print("\n✅ 结果已保存:")
+    print("  - outputs/黄山谷捷_cross_check_detailed.json")
+    print("  - outputs/evaluation_report.json")
